@@ -1,7 +1,7 @@
 # Initial Task (CapDL Initialiser) Details
 
 # IRQ Details
-	- IRQ: 'irq_33_wordleServer'
+	- IRQ: 'irq_33_serialServer'
 		* Number: 33
 		* Trigger: level
 		* CPU: 0
@@ -20,19 +20,33 @@
 			-> CSpace: 'cnode_monitor'
 			-> Scheduling Context: 'sched_context_monitor'
 
-	- TCB: 'tcb_wordleServer'
+	- TCB: 'tcb_serialServer'
 		* IP: 0x200000
 		* SP: 0xffffffe000
 		* IPC Buffer: 0xfffffff000
 		* Priority: 254
 		* CPU Affinity: 0
 		* Bound Objects:
-			-> CSpace: 'cnode_wordleServer_root'
-			-> VSpace: 'pud_wordleServer'
-			-> IPC Buffer: 'frame_ipcbuf_wordleServer'
+			-> CSpace: 'cnode_serialServer_root'
+			-> VSpace: 'pud_serialServer'
+			-> IPC Buffer: 'frame_ipcbuf_serialServer'
 			-> Fault Endpoint: 'ep_fault_monitor'
-			-> Scheduling Context: 'sched_context_wordleServer'
-			-> Notification: 'ntfn_wordleServer'
+			-> Scheduling Context: 'sched_context_serialServer'
+			-> Notification: 'ntfn_serialServer'
+
+	- TCB: 'tcb_wordleClient'
+		* IP: 0x200000
+		* SP: 0xffffffe000
+		* IPC Buffer: 0xfffffff000
+		* Priority: 0
+		* CPU Affinity: 0
+		* Bound Objects:
+			-> CSpace: 'cnode_wordleClient_root'
+			-> VSpace: 'pud_wordleClient'
+			-> IPC Buffer: 'frame_ipcbuf_wordleClient'
+			-> Fault Endpoint: 'ep_fault_monitor'
+			-> Scheduling Context: 'sched_context_wordleClient'
+			-> Notification: 'ntfn_wordleClient'
 
 
 # CNode Details
@@ -44,11 +58,13 @@
 		* Slot: 2
 			-> Object: 'reply_monitor'
 		* Slot: 10
-			-> Object: 'tcb_wordleServer'
+			-> Object: 'tcb_serialServer'
+		* Slot: 11
+			-> Object: 'tcb_wordleClient'
 
-	- CNode: 'cnode_wordleServer'
+	- CNode: 'cnode_serialServer'
 		* Slot: 1
-			-> Object: 'ntfn_wordleServer'
+			-> Object: 'ntfn_serialServer'
 			-> Rights: Read, Write
 			-> Badge: 0x0
 		* Slot: 2
@@ -56,15 +72,41 @@
 			-> Rights: Read, Write, Grant
 			-> Badge: 0x1
 		* Slot: 3
-			-> Object: 'pud_wordleServer'
+			-> Object: 'pud_serialServer'
 		* Slot: 4
-			-> Object: 'reply_wordleServer'
+			-> Object: 'reply_serialServer'
+		* Slot: 11
+			-> Object: 'ntfn_wordleClient'
+			-> Rights: Read, Write
+			-> Badge: 0x4
 		* Slot: 138
-			-> Object: 'irq_33_wordleServer'
+			-> Object: 'irq_33_serialServer'
 
-	- CNode: 'cnode_wordleServer_root'
+	- CNode: 'cnode_wordleClient'
+		* Slot: 1
+			-> Object: 'ntfn_wordleClient'
+			-> Rights: Read, Write
+			-> Badge: 0x0
+		* Slot: 2
+			-> Object: 'ep_fault_monitor'
+			-> Rights: Read, Write, Grant
+			-> Badge: 0x2
+		* Slot: 3
+			-> Object: 'pud_wordleClient'
+		* Slot: 4
+			-> Object: 'reply_wordleClient'
+		* Slot: 12
+			-> Object: 'ntfn_serialServer'
+			-> Rights: Read, Write
+			-> Badge: 0x2
+
+	- CNode: 'cnode_serialServer_root'
 		* Slot: 0
-			-> Object: 'cnode_wordleServer'
+			-> Object: 'cnode_serialServer'
+
+	- CNode: 'cnode_wordleClient_root'
+		* Slot: 0
+			-> Object: 'cnode_wordleClient'
 
 
 # Architecture Specific Details
@@ -72,42 +114,63 @@
 # Kernel Objects Details: ID, Type, Name, Physical Address
 	0 - Page(4 KiB): 'frame_mr_uart_000000000' @ 0x000009000000
 	1 - CNode: 'cnode_monitor' @ 0x000060000000
-	2 - CNode: 'cnode_wordleServer' @ 0x000060004000
-	3 - PageTable: 'pud_monitor' @ 0x000060008000
-	4 - PageTable: 'pud_wordleServer' @ 0x00006000a000
-	5 - Page(4 KiB): 'frame_elf_monitor_000000000' @ 0x00006000c000
-	6 - Page(4 KiB): 'frame_elf_monitor_000000001' @ 0x00006000d000
-	7 - Page(4 KiB): 'frame_elf_monitor_000000002' @ 0x00006000e000
-	8 - Page(4 KiB): 'frame_elf_monitor_000000003' @ 0x00006000f000
-	9 - Page(4 KiB): 'frame_elf_monitor_000000004' @ 0x0000602b9000
-	10 - Page(4 KiB): 'frame_elf_monitor_000000005' @ 0x0000602ba000
-	11 - Page(4 KiB): 'frame_elf_wordleServer_000000000' @ 0x0000602bb000
-	12 - Page(4 KiB): 'frame_elf_wordleServer_000000001' @ 0x0000602bc000
-	13 - Page(4 KiB): 'frame_elf_wordleServer_000000002' @ 0x0000602bd000
-	14 - Page(4 KiB): 'frame_elf_wordleServer_000000003' @ 0x0000602be000
-	15 - Page(4 KiB): 'frame_elf_wordleServer_000000004' @ 0x0000602bf000
-	16 - Page(4 KiB): 'frame_elf_wordleServer_000000005' @ 0x0000602c0000
-	17 - Page(4 KiB): 'frame_elf_wordleServer_000000006' @ 0x0000602c1000
-	18 - Page(4 KiB): 'frame_ipcbuf_monitor' @ 0x0000602c2000
-	19 - Page(4 KiB): 'frame_ipcbuf_wordleServer' @ 0x0000602c3000
-	20 - Page(4 KiB): 'frame_monitor_stack' @ 0x0000602c4000
-	21 - Page(4 KiB): 'frame_wordleServer_stack_000000000' @ 0x0000602c5000
-	22 - Page(4 KiB): 'frame_wordleServer_stack_000000001' @ 0x0000602c6000
-	23 - PageTable: 'pd_monitor_vaddr_0x200000' @ 0x0000602c7000
-	24 - PageTable: 'pd_monitor_vaddr_0xffffe00000' @ 0x0000602c8000
-	25 - PageTable: 'pd_wordleServer_vaddr_0x200000' @ 0x0000602c9000
-	26 - PageTable: 'pd_wordleServer_vaddr_0xffffe00000' @ 0x0000602ca000
-	27 - PageTable: 'pt_monitor_vaddr_0x200000' @ 0x0000602cb000
-	28 - PageTable: 'pt_monitor_vaddr_0xffffffd000' @ 0x0000602cc000
-	29 - PageTable: 'pt_wordleServer_vaddr_0x200000' @ 0x0000602cd000
-	30 - PageTable: 'pt_wordleServer_vaddr_0x400000' @ 0x0000602ce000
-	31 - PageTable: 'pt_wordleServer_vaddr_0xfffffff000' @ 0x0000602cf000
-	32 - TCB: 'tcb_monitor' @ 0x0000602d0000
-	33 - TCB: 'tcb_wordleServer' @ 0x0000602d1000
-	34 - CNode: 'cnode_wordleServer_root' @ 0x0000602d2000
-	35 - SchedContext: 'sched_context_monitor' @ 0x0000602d2800
-	36 - SchedContext: 'sched_context_wordleServer' @ 0x0000602d2900
-	37 - Notification: 'ntfn_wordleServer' @ 0x0000602d2a00
-	38 - Reply: 'reply_monitor' @ 0x0000602d2a40
-	39 - Reply: 'reply_wordleServer' @ 0x0000602d2a60
-	40 - Endpoint: 'ep_fault_monitor' @ 0x0000602d2a80
+	2 - CNode: 'cnode_serialServer' @ 0x000060004000
+	3 - CNode: 'cnode_wordleClient' @ 0x000060008000
+	4 - PageTable: 'pud_monitor' @ 0x00006000c000
+	5 - PageTable: 'pud_serialServer' @ 0x00006000e000
+	6 - PageTable: 'pud_wordleClient' @ 0x0000602c2000
+	7 - Page(4 KiB): 'frame_elf_monitor_000000000' @ 0x0000602c1000
+	8 - Page(4 KiB): 'frame_elf_monitor_000000001' @ 0x0000602c4000
+	9 - Page(4 KiB): 'frame_elf_monitor_000000002' @ 0x0000602c5000
+	10 - Page(4 KiB): 'frame_elf_monitor_000000003' @ 0x0000602c6000
+	11 - Page(4 KiB): 'frame_elf_monitor_000000004' @ 0x0000602c7000
+	12 - Page(4 KiB): 'frame_elf_monitor_000000005' @ 0x0000602c8000
+	13 - Page(4 KiB): 'frame_elf_serialServer_000000000' @ 0x0000602c9000
+	14 - Page(4 KiB): 'frame_elf_serialServer_000000001' @ 0x0000602ca000
+	15 - Page(4 KiB): 'frame_elf_serialServer_000000002' @ 0x0000602cb000
+	16 - Page(4 KiB): 'frame_elf_serialServer_000000003' @ 0x0000602cc000
+	17 - Page(4 KiB): 'frame_elf_serialServer_000000004' @ 0x0000602cd000
+	18 - Page(4 KiB): 'frame_elf_serialServer_000000005' @ 0x0000602ce000
+	19 - Page(4 KiB): 'frame_elf_serialServer_000000006' @ 0x0000602cf000
+	20 - Page(4 KiB): 'frame_elf_wordleClient_000000000' @ 0x0000602d0000
+	21 - Page(4 KiB): 'frame_elf_wordleClient_000000001' @ 0x0000602d1000
+	22 - Page(4 KiB): 'frame_elf_wordleClient_000000002' @ 0x0000602d2000
+	23 - Page(4 KiB): 'frame_elf_wordleClient_000000003' @ 0x0000602d3000
+	24 - Page(4 KiB): 'frame_elf_wordleClient_000000004' @ 0x0000602d4000
+	25 - Page(4 KiB): 'frame_elf_wordleClient_000000005' @ 0x0000602d5000
+	26 - Page(4 KiB): 'frame_elf_wordleClient_000000006' @ 0x0000602d6000
+	27 - Page(4 KiB): 'frame_ipcbuf_monitor' @ 0x0000602d7000
+	28 - Page(4 KiB): 'frame_ipcbuf_serialServer' @ 0x0000602d8000
+	29 - Page(4 KiB): 'frame_ipcbuf_wordleClient' @ 0x0000602d9000
+	30 - Page(4 KiB): 'frame_monitor_stack' @ 0x0000602da000
+	31 - Page(4 KiB): 'frame_serialServer_stack_000000000' @ 0x0000602db000
+	32 - Page(4 KiB): 'frame_serialServer_stack_000000001' @ 0x0000602dc000
+	33 - Page(4 KiB): 'frame_wordleClient_stack_000000000' @ 0x0000602dd000
+	34 - Page(4 KiB): 'frame_wordleClient_stack_000000001' @ 0x0000602de000
+	35 - PageTable: 'pd_monitor_vaddr_0x200000' @ 0x0000602df000
+	36 - PageTable: 'pd_monitor_vaddr_0xffffe00000' @ 0x0000602e0000
+	37 - PageTable: 'pd_serialServer_vaddr_0x200000' @ 0x0000602e1000
+	38 - PageTable: 'pd_serialServer_vaddr_0xffffe00000' @ 0x0000602e2000
+	39 - PageTable: 'pd_wordleClient_vaddr_0x200000' @ 0x0000602e3000
+	40 - PageTable: 'pd_wordleClient_vaddr_0xffffe00000' @ 0x0000602e4000
+	41 - PageTable: 'pt_monitor_vaddr_0x200000' @ 0x0000602e5000
+	42 - PageTable: 'pt_monitor_vaddr_0xffffffd000' @ 0x0000602e6000
+	43 - PageTable: 'pt_serialServer_vaddr_0x200000' @ 0x0000602e7000
+	44 - PageTable: 'pt_serialServer_vaddr_0x400000' @ 0x0000602e8000
+	45 - PageTable: 'pt_serialServer_vaddr_0xfffffff000' @ 0x0000602e9000
+	46 - PageTable: 'pt_wordleClient_vaddr_0x200000' @ 0x0000602ea000
+	47 - PageTable: 'pt_wordleClient_vaddr_0xfffffff000' @ 0x0000602eb000
+	48 - TCB: 'tcb_monitor' @ 0x0000602ec000
+	49 - TCB: 'tcb_serialServer' @ 0x0000602ed000
+	50 - TCB: 'tcb_wordleClient' @ 0x0000602ee000
+	51 - CNode: 'cnode_serialServer_root' @ 0x0000602ef000
+	52 - CNode: 'cnode_wordleClient_root' @ 0x0000602ef800
+	53 - SchedContext: 'sched_context_monitor' @ 0x0000602f0000
+	54 - SchedContext: 'sched_context_serialServer' @ 0x0000602f0100
+	55 - SchedContext: 'sched_context_wordleClient' @ 0x0000602f0200
+	56 - Notification: 'ntfn_serialServer' @ 0x0000602f0300
+	57 - Notification: 'ntfn_wordleClient' @ 0x0000602f0340
+	58 - Reply: 'reply_monitor' @ 0x0000602f0380
+	59 - Reply: 'reply_serialServer' @ 0x0000602f03a0
+	60 - Reply: 'reply_wordleClient' @ 0x0000602f03c0
+	61 - Endpoint: 'ep_fault_monitor' @ 0x0000602f03e0

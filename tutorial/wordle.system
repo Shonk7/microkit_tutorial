@@ -3,10 +3,18 @@
     <!-- Define your system here -->
     <memory_region name="uart" size="0x1_000" phys_addr="0x9000000" />
 
-    <protection_domain name="wordleServer" priority="254">
+    <protection_domain name="serialServer" priority="254">
       <program_image path="serial_server.elf"/>
       <!-- Mapping to UART -->
       <map mr="uart" vaddr="0x400000" perms="rw" cached="false" setvar_vaddr="uart_base_vaddr"/>
       <irq id="0" irq="33"/> <!-- QEMU interrupt-->
     </protection_domain>
+    <protection_domain name="wordleClient" priority="0">
+      <program_image path="client.elf"/>
+    </protection_domain>
+    <!-- channels -->
+    <channel>
+        <end pd="serialServer" id="1" />
+        <end pd="wordleClient" id="2" />
+    </channel>
 </system>
