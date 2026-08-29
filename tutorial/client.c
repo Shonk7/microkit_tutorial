@@ -10,11 +10,13 @@
 #define YELLOW "\033[39;103m"
 #define DEFAULT_COLOUR "\033[0m"
 #define CLIENT_CH 2
+#define CLIENT_EP 3
+#define WORDLE_EP 4
 #define INVALID_CHAR (-1)
 
 #define CLIENT_INPUT ((char *)0x5000000)
 #define CLIENT_OUTPUT ((char *)0x5001000)
-
+#define WORDLE_WORD_SIZE 5
 struct wordle_char {
     int ch;
     enum character_state state;
@@ -32,6 +34,15 @@ void wordle_server_send() {
     // After doing the PPC, the Wordle server should have updated
     // the message-registers containing the state of each character.
     // Look at the message registers and update the `table` accordingly.
+    microkit_msginfo msg = microkit_msginfo_new(0, WORDLE_WORD_SIZE);
+    for (int i = 0; i < WORDLE_WORD_SIZE; i++) {
+        microkit_mr_set(i, table[curr_row][i].ch);
+    }
+    microkit_ppcall(CLIENT_EP, msg);
+    // now set state
+    for (int i = 0; i < WORDLE_WORD_SIZE; i++) {
+        table[curr_row][i].state = (enum character_state)microkit_mr_get(i);
+    }
 }
 
 void serial_send(char *str) {

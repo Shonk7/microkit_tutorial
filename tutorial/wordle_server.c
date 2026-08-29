@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include "printf.h"
 #include "wordle.h"
-
+#define WORDLE_EP 4
 /*
  * Here we initialise the word to "hello", but later in the tutorial
  * we will actually randomise the word the user is guessing.
@@ -31,8 +31,21 @@ enum character_state char_to_state(int ch, char *word, uint64_t index) {
     }
 }
 
+microkit_msginfo protected(microkit_channel ch, microkit_msginfo msginfo)
+{
+    for (int i = 0; i < WORD_LENGTH; i++) {
+        enum character_state st = char_to_state(microkit_mr_get(i), word, i);
+        microkit_mr_set(i, (seL4_Word)st);
+    } 
+  
+    return microkit_msginfo_new(0, WORD_LENGTH);
+}
+
+
 void init(void) {
     microkit_dbg_puts("WORDLE SERVER: starting\n");
 }
 
-void notified(microkit_channel channel) {}
+void notified(microkit_channel channel) {
+
+}

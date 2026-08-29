@@ -5,7 +5,7 @@
     <memory_region name="client_input" size="0x1000" />
     <memory_region name="client_output" size="0x1000" />
 
-    <protection_domain name="serialServer" priority="254">
+    <protection_domain name="serialServer" priority="2">
       <program_image path="serial_server.elf"/>
       <!-- Mapping to UART -->
       <map mr="uart" vaddr="0x400000" perms="rw" cached="false" setvar_vaddr="uart_base_vaddr"/>
@@ -18,9 +18,18 @@
       <map mr="client_input" vaddr="0x5000000" perms="rw"/>
       <map mr="client_output" vaddr="0x5001000" perms="rw"/>
     </protection_domain>
+    <protection_domain name="wordleServer" priority="1">
+      <program_image path="wordle_server.elf"/>
+    </protection_domain>
     <!-- channels -->
+    <!-- For serial_server and wordleClient -->
     <channel>
         <end pd="serialServer" id="1" />
         <end pd="wordleClient" id="2" />
+    </channel>
+    <!-- Between client and wordleServer -->
+    <channel>
+        <end pd="wordleClient" id="3" pp="true"/>
+        <end pd="wordleServer" id="4"/>
     </channel>
 </system>
