@@ -143,34 +143,38 @@
 	28 - Page(4 KiB): 'frame_ipcbuf_serialServer' @ 0x0000602d8000
 	29 - Page(4 KiB): 'frame_ipcbuf_wordleClient' @ 0x0000602d9000
 	30 - Page(4 KiB): 'frame_monitor_stack' @ 0x0000602da000
-	31 - Page(4 KiB): 'frame_serialServer_stack_000000000' @ 0x0000602db000
-	32 - Page(4 KiB): 'frame_serialServer_stack_000000001' @ 0x0000602dc000
-	33 - Page(4 KiB): 'frame_wordleClient_stack_000000000' @ 0x0000602dd000
-	34 - Page(4 KiB): 'frame_wordleClient_stack_000000001' @ 0x0000602de000
-	35 - PageTable: 'pd_monitor_vaddr_0x200000' @ 0x0000602df000
-	36 - PageTable: 'pd_monitor_vaddr_0xffffe00000' @ 0x0000602e0000
-	37 - PageTable: 'pd_serialServer_vaddr_0x200000' @ 0x0000602e1000
-	38 - PageTable: 'pd_serialServer_vaddr_0xffffe00000' @ 0x0000602e2000
-	39 - PageTable: 'pd_wordleClient_vaddr_0x200000' @ 0x0000602e3000
-	40 - PageTable: 'pd_wordleClient_vaddr_0xffffe00000' @ 0x0000602e4000
-	41 - PageTable: 'pt_monitor_vaddr_0x200000' @ 0x0000602e5000
-	42 - PageTable: 'pt_monitor_vaddr_0xffffffd000' @ 0x0000602e6000
-	43 - PageTable: 'pt_serialServer_vaddr_0x200000' @ 0x0000602e7000
-	44 - PageTable: 'pt_serialServer_vaddr_0x400000' @ 0x0000602e8000
-	45 - PageTable: 'pt_serialServer_vaddr_0xfffffff000' @ 0x0000602e9000
-	46 - PageTable: 'pt_wordleClient_vaddr_0x200000' @ 0x0000602ea000
-	47 - PageTable: 'pt_wordleClient_vaddr_0xfffffff000' @ 0x0000602eb000
-	48 - TCB: 'tcb_monitor' @ 0x0000602ec000
-	49 - TCB: 'tcb_serialServer' @ 0x0000602ed000
-	50 - TCB: 'tcb_wordleClient' @ 0x0000602ee000
-	51 - CNode: 'cnode_serialServer_root' @ 0x0000602ef000
-	52 - CNode: 'cnode_wordleClient_root' @ 0x0000602ef800
-	53 - SchedContext: 'sched_context_monitor' @ 0x0000602f0000
-	54 - SchedContext: 'sched_context_serialServer' @ 0x0000602f0100
-	55 - SchedContext: 'sched_context_wordleClient' @ 0x0000602f0200
-	56 - Notification: 'ntfn_serialServer' @ 0x0000602f0300
-	57 - Notification: 'ntfn_wordleClient' @ 0x0000602f0340
-	58 - Reply: 'reply_monitor' @ 0x0000602f0380
-	59 - Reply: 'reply_serialServer' @ 0x0000602f03a0
-	60 - Reply: 'reply_wordleClient' @ 0x0000602f03c0
-	61 - Endpoint: 'ep_fault_monitor' @ 0x0000602f03e0
+	31 - Page(4 KiB): 'frame_mr_client_input_000000000' @ 0x0000602db000
+	32 - Page(4 KiB): 'frame_mr_client_output_000000000' @ 0x0000602dc000
+	33 - Page(4 KiB): 'frame_serialServer_stack_000000000' @ 0x0000602dd000
+	34 - Page(4 KiB): 'frame_serialServer_stack_000000001' @ 0x0000602de000
+	35 - Page(4 KiB): 'frame_wordleClient_stack_000000000' @ 0x0000602df000
+	36 - Page(4 KiB): 'frame_wordleClient_stack_000000001' @ 0x0000602e0000
+	37 - PageTable: 'pd_monitor_vaddr_0x200000' @ 0x0000602e1000
+	38 - PageTable: 'pd_monitor_vaddr_0xffffe00000' @ 0x0000602e2000
+	39 - PageTable: 'pd_serialServer_vaddr_0x200000' @ 0x0000602e3000
+	40 - PageTable: 'pd_serialServer_vaddr_0xffffe00000' @ 0x0000602e4000
+	41 - PageTable: 'pd_wordleClient_vaddr_0x200000' @ 0x0000602e5000
+	42 - PageTable: 'pd_wordleClient_vaddr_0xffffe00000' @ 0x0000602e6000
+	43 - PageTable: 'pt_monitor_vaddr_0x200000' @ 0x0000602e7000
+	44 - PageTable: 'pt_monitor_vaddr_0xffffffd000' @ 0x0000602e8000
+	45 - PageTable: 'pt_serialServer_vaddr_0x200000' @ 0x0000602e9000
+	46 - PageTable: 'pt_serialServer_vaddr_0x400000' @ 0x0000602ea000
+	47 - PageTable: 'pt_serialServer_vaddr_0x5000000' @ 0x0000602eb000
+	48 - PageTable: 'pt_serialServer_vaddr_0xfffffff000' @ 0x0000602ec000
+	49 - PageTable: 'pt_wordleClient_vaddr_0x200000' @ 0x0000602ed000
+	50 - PageTable: 'pt_wordleClient_vaddr_0x5000000' @ 0x0000602ee000
+	51 - PageTable: 'pt_wordleClient_vaddr_0xfffffff000' @ 0x0000602ef000
+	52 - TCB: 'tcb_monitor' @ 0x0000602f0000
+	53 - TCB: 'tcb_serialServer' @ 0x0000602f1000
+	54 - TCB: 'tcb_wordleClient' @ 0x0000602f2000
+	55 - CNode: 'cnode_serialServer_root' @ 0x0000602f3000
+	56 - CNode: 'cnode_wordleClient_root' @ 0x0000602f3800
+	57 - SchedContext: 'sched_context_monitor' @ 0x0000602f4000
+	58 - SchedContext: 'sched_context_serialServer' @ 0x0000602f4100
+	59 - SchedContext: 'sched_context_wordleClient' @ 0x0000602f4200
+	60 - Notification: 'ntfn_serialServer' @ 0x0000602f4300
+	61 - Notification: 'ntfn_wordleClient' @ 0x0000602f4340
+	62 - Reply: 'reply_monitor' @ 0x0000602f4380
+	63 - Reply: 'reply_serialServer' @ 0x0000602f43a0
+	64 - Reply: 'reply_wordleClient' @ 0x0000602f43c0
+	65 - Endpoint: 'ep_fault_monitor' @ 0x0000602f43e0

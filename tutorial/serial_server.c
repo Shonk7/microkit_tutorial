@@ -12,8 +12,10 @@ uintptr_t uart_base_vaddr;
 #define UARTICR 0x044
 #define PL011_UARTFR_TXFF (1 << 5)
 #define PL011_UARTFR_RXFE (1 << 4)
-#define SERIAL_TO_CLIENT_CH 1
+#define SERIAL_CH 1
 #define UART_IRQ_CHANNEL_ID 0
+#define CLIENT_INPUT ((char *)0x5000000)
+#define CLIENT_OUTPUT ((char *)0x5001000)
 
 #define REG_PTR(base, offset) ((volatile uint32_t *)((base) + (offset)))
 
@@ -77,13 +79,17 @@ void notified(microkit_channel channel) {
         case UART_IRQ_CHANNEL_ID:
             // get character and print it out
             int chr = uart_get_char();
-            uart_put_char(chr);
+            //uart_put_char(chr);
+            // display for client
+            *CLIENT_INPUT = chr;
+            microkit_notify(SERIAL_CH);
             // handle interrupt request and acknowledge it
             uart_handle_irq();
             microkit_irq_ack(channel);
             break;
-        case SERIAL_TO_CLIENT_CH:
-            microkit_dbg_puts("Received message \n");
+        case SERIAL_CH:
+            // microkit_dbg_puts("Received message \n");
+            uart_put_str(CLIENT_OUTPUT);
             break;
         default:
             microkit_dbg_puts("SERIAL SERVER|ERROR: unexpected channel\n");

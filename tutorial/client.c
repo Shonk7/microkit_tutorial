@@ -9,8 +9,11 @@
 #define GREEN "\033[32;1;40m"
 #define YELLOW "\033[39;103m"
 #define DEFAULT_COLOUR "\033[0m"
-#define CLIENT_TO_SERIAL_CH 2
+#define CLIENT_CH 2
 #define INVALID_CHAR (-1)
+
+#define CLIENT_INPUT ((char *)0x5000000)
+#define CLIENT_OUTPUT ((char *)0x5001000)
 
 struct wordle_char {
     int ch;
@@ -33,7 +36,14 @@ void wordle_server_send() {
 
 void serial_send(char *str) {
     // Implement this function to get the serial server to print the string.
-    // microkit_notify(CLIENT_TO_SERIAL_CH);
+    char *out = CLIENT_OUTPUT;
+    // increment buffer
+    while (*str) {
+        *out++ = *str++;
+    }
+    //end
+    *out = '\0';
+    microkit_notify(CLIENT_CH);
 }
 
 // This function prints a CLI Wordle using pretty colours for what characters
@@ -116,7 +126,7 @@ void add_char_to_table(char c) {
 
 void init(void) {
     microkit_dbg_puts("CLIENT: starting\n");
-    microkit_notify(CLIENT_TO_SERIAL_CH);
+    microkit_notify(CLIENT_CH);
     serial_send("Welcome to the Wordle client!\n");
 
     init_table();
@@ -126,4 +136,14 @@ void init(void) {
     print_table(false);
 }
 
-void notified(microkit_channel channel) {}
+void notified(microkit_channel channel) {
+    switch(channel) {
+        // server sends to client
+        case CLIENT_CH: 
+            int ch = *CLIENT_INPUT;
+            add_char_to_table(ch);
+            print_table(true);
+            break;
+
+    }
+}
